@@ -1,0 +1,34 @@
+[
+  {
+    "type": "ftp",
+    "args": "addr=10.39.12.56:21;user=ftpuser;password=passw0rd!;path=/wxpt_imgs/service/bkjdcx.png;des=/Users/defned/1-{datetime}.png"
+  },
+  {
+    "type": "copy",
+    "args": "/Users/defned/Desktop/WechatIMG6.png /Users/defned/Desktop/WechatIMG688888-{datetime}.png"
+  },
+  {
+    "type": "delete",
+    "args": "/Users/defned/git/workstep/test*"
+  },
+  {
+    "type": "delete",
+    "args": "/Users/defned/git/workstep/main.exe"
+  },
+  {
+    "type": "zip",
+    "args": "files=/Users/defned/Desktop/WechatIMG6.png,/Users/defned/Desktop/WechatIMG7.png,/Users/defned/git/authz;des=/Users/defned/git/workstep/test.zip"
+  },
+  {
+    "type": "unzip",
+    "args": "file=/Users/defned/git/workstep/test.zip;des=/Users/defned/git/workstep/testunzip"
+  },
+  {
+    "type": "bash",
+    "args": "jps"
+  },
+  {
+    "type": "bash",
+    "args": "nohup java -jar /Users/defned/git/JS_SheQu_Java_Sybase/community-service/target/community-service-1.0.0.jar"
+  }
+]
