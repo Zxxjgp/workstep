@@ -26,16 +26,15 @@ type step struct {
 	Args string `json:"args"`
 }
 
-
 type HandlerRegister struct {
 	mu   sync.RWMutex
 	hmap map[string]Handler
 }
 
-func (hr *HandlerRegister) Add( h Handler, name string) error {
+func (hr *HandlerRegister) Add(h Handler, name string) error {
 	hr.mu.Lock()
 	defer hr.mu.Unlock()
-	if _, ok :=hr.hmap[name]; !ok{
+	if _, ok := hr.hmap[name]; !ok {
 		hr.hmap[name] = h
 	}
 	return nil
@@ -49,12 +48,12 @@ func CreateSession() *Session {
 
 func CreateHandlerRegister() *HandlerRegister {
 	return &HandlerRegister{
-		mu : sync.RWMutex{},
-		hmap:make(map[string]Handler),
+		mu:   sync.RWMutex{},
+		hmap: make(map[string]Handler),
 	}
 }
 
-func (s *Session)LoadConf(conf string) error {
+func (s *Session) LoadConf(conf string) error {
 	bytes, err := ioutil.ReadFile(conf)
 	if err != nil {
 		return err
@@ -68,25 +67,25 @@ func (s *Session)LoadConf(conf string) error {
 	return nil
 }
 
-func (s *Session)Start() error {
-	for i, st := range s.Steps{
-		if h, ok := s.HandlerRegister.hmap[st.Type]; ok{
+func (s *Session) Start() error {
+	for i, st := range s.Steps {
+		if h, ok := s.HandlerRegister.hmap[st.Type]; ok {
 			s.Args = st.Args
 			err := h(s)
 			if err != nil {
 				log.Printf("step %d:%s,err:%v", i, st.Type, err)
 				if s.ErrorContinue {
 					s.Err = append(s.Err, err)
-				}else {
+				} else {
 					return err
 				}
 			}
-			log.Printf("step %d:%s,done.",i , st.Type)
-		}else {
+			log.Printf("step %d:%s,done.", i, st.Type)
+		} else {
 			e := errors.New(fmt.Sprintf("cant found %s commond", st.Type))
 			if s.ErrorContinue {
 				s.Err = append(s.Err, e)
-			}else {
+			} else {
 				return e
 			}
 		}

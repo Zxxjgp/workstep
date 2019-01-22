@@ -1,4 +1,7 @@
 # workstep
+
+[![Build Status](https://travis-ci.org/Fengxq2014/workstep.svg?branch=master)](https://travis-ci.org/Fengxq2014/workstep)
+
 步骤器
 
 ## 插件机制

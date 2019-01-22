@@ -16,14 +16,14 @@ func Register(session *workstep.Session) {
 func dozip(s *workstep.Session) error {
 	maps := make(map[string]string)
 	split := strings.Split(s.Args, ";")
-	for _, spl := range split{
+	for _, spl := range split {
 		temp := strings.Split(spl, "=")
 		if _, ok := maps[temp[0]]; !ok {
 			maps[temp[0]] = temp[1]
 		}
 	}
 	params := []string{"files", "des"}
-	for _, param := range params{
+	for _, param := range params {
 		if _, ok := maps[param]; !ok {
 			return errors.New("cant found param " + param)
 		}
@@ -34,17 +34,17 @@ func dozip(s *workstep.Session) error {
 func dounzip(s *workstep.Session) error {
 	maps := make(map[string]string)
 	split := strings.Split(s.Args, ";")
-	for _, spl := range split{
+	for _, spl := range split {
 		temp := strings.Split(spl, "=")
 		if _, ok := maps[temp[0]]; !ok {
 			maps[temp[0]] = temp[1]
 		}
 	}
 	params := []string{"file", "des"}
-	for _, param := range params{
+	for _, param := range params {
 		if _, ok := maps[param]; !ok {
 			return errors.New("cant found param " + param)
 		}
 	}
-	return archiver.Unarchive(maps["file"],workstep.FormatStr(maps["des"]))
+	return archiver.Unarchive(maps["file"], workstep.FormatStr(maps["des"]))
 }

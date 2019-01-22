@@ -16,7 +16,7 @@ var errContinue bool
 
 func main() {
 	flag.StringVar(&conf, "c", "./step.json", "config file path")
-	flag.BoolVar(&errContinue,"ec", false, "step error continue")
+	flag.BoolVar(&errContinue, "ec", false, "step error continue")
 	flag.Parse()
 
 	session := workstep.CreateSession()

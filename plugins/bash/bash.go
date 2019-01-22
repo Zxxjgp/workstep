@@ -22,7 +22,7 @@ func dobash(s *workstep.Session) error {
 		return errors.New("null command")
 	}
 	if split[0] == "nohup" {
-		destinationDirPath := filepath.Dir(split[len(split) -1])
+		destinationDirPath := filepath.Dir(split[len(split)-1])
 		log := filepath.Join(destinationDirPath, "nohup.out")
 		cmd := exec.Command("nohup", split[1:]...)
 
@@ -38,7 +38,7 @@ func dobash(s *workstep.Session) error {
 			return err
 		}
 		return nil
-	}else {
+	} else {
 		command := exec.Command(split[0], split[1:]...)
 		var errorout bytes.Buffer
 		var out bytes.Buffer

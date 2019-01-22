@@ -34,7 +34,7 @@ func copy(s *workstep.Session) error {
 		return err
 	}
 	defer source.Close()
-	des :=workstep.FormatStr(split[1])
+	des := workstep.FormatStr(split[1])
 	destination, err := os.Create(des)
 	if err != nil {
 		return err
