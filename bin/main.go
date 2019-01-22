@@ -2,13 +2,14 @@ package main
 
 import (
 	"flag"
+	"log"
+
 	"github.com/Fengxq2014/workstep"
 	"github.com/Fengxq2014/workstep/plugins/bash"
 	"github.com/Fengxq2014/workstep/plugins/copy"
-	delete2 "github.com/Fengxq2014/workstep/plugins/delete"
+	"github.com/Fengxq2014/workstep/plugins/delete"
 	"github.com/Fengxq2014/workstep/plugins/ftp"
 	"github.com/Fengxq2014/workstep/plugins/zip"
-	"log"
 )
 
 var conf string
@@ -28,7 +29,7 @@ func main() {
 	copy.Register(session)
 	ftp.Register(session)
 	zip.Register(session)
-	delete2.Register(session)
+	delete.Register(session)
 	bash.Register(session)
 	session.Start()
 }

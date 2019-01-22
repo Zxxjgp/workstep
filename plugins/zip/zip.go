@@ -2,13 +2,14 @@ package zip
 
 import (
 	"errors"
+	"strings"
+
 	"github.com/Fengxq2014/workstep"
 	"github.com/mholt/archiver"
-	"strings"
 )
 
+// Register 将插件注册到session
 func Register(session *workstep.Session) {
-	// 将插件注册到session
 	session.HandlerRegister.Add(workstep.Handler(dozip), "zip")
 	session.HandlerRegister.Add(workstep.Handler(dounzip), "unzip")
 }

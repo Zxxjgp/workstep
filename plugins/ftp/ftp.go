@@ -2,16 +2,17 @@ package ftp
 
 import (
 	"errors"
-	"github.com/Fengxq2014/workstep"
-	"github.com/jlaffaye/ftp"
 	"io"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/Fengxq2014/workstep"
+	"github.com/jlaffaye/ftp"
 )
 
+// Register 将插件注册到session
 func Register(session *workstep.Session) {
-	// 将插件注册到session
 	session.HandlerRegister.Add(workstep.Handler(start), "ftp")
 }
 

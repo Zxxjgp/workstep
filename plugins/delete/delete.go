@@ -1,13 +1,14 @@
 package delete
 
 import (
-	"github.com/Fengxq2014/workstep"
 	"os"
 	"path/filepath"
+
+	"github.com/Fengxq2014/workstep"
 )
 
+// Register 将插件注册到session
 func Register(session *workstep.Session) {
-	// 将插件注册到session
 	session.HandlerRegister.Add(workstep.Handler(dodelete), "delete")
 }
 

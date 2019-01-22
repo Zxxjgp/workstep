@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Fengxq2014/workstep"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/Fengxq2014/workstep"
 )
 
+// Register 将插件注册到session
 func Register(session *workstep.Session) {
-	// 将插件注册到session
 	session.HandlerRegister.Add(workstep.Handler(dobash), "bash")
 }
 
