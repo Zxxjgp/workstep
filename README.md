@@ -1,6 +1,7 @@
 # workstep
 
 [![Build Status](https://travis-ci.org/Fengxq2014/workstep.svg?branch=master)](https://travis-ci.org/Fengxq2014/workstep)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Fengxq2014/workstep)](https://goreportcard.com/report/github.com/Fengxq2014/workstep)
 
 步骤器
 
