@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"github.com/Fengxq2014/workstep/plugins/kill"
 	"log"
+
+	"github.com/Fengxq2014/workstep/plugins/kill"
 
 	"github.com/Fengxq2014/workstep"
 	"github.com/Fengxq2014/workstep/plugins/bash"
@@ -17,7 +18,6 @@ var conf string
 var errContinue bool
 
 func main() {
-	log.SetPrefix("sss")
 	flag.StringVar(&conf, "c", "./step.json", "config file path")
 	flag.BoolVar(&errContinue, "ec", false, "step error continue")
 	flag.Parse()
