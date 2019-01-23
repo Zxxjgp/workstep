@@ -2,6 +2,7 @@ package ftp
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -13,10 +14,10 @@ import (
 
 // Register 将插件注册到session
 func Register(session *workstep.Session) {
-	session.HandlerRegister.Add(workstep.Handler(start), "ftp")
+	session.HandlerRegister.Add(workstep.Handler(doftp), "ftp")
 }
 
-func start(s *workstep.Session) error {
+func doftp(s *workstep.Session) error {
 	maps := make(map[string]string)
 	split := strings.Split(s.Args, ";")
 	for _, spl := range split {
@@ -25,7 +26,7 @@ func start(s *workstep.Session) error {
 			maps[temp[0]] = temp[1]
 		}
 	}
-	params := []string{"addr", "user", "password", "path", "des"}
+	params := []string{"addr", "user", "password", "path", "des", "methods"}
 	for _, param := range params {
 		if _, ok := maps[param]; !ok {
 			return errors.New("cant found param " + param)
@@ -39,12 +40,22 @@ func start(s *workstep.Session) error {
 	if err != nil {
 		return err
 	}
-	response, err := conn.Retr(maps["path"])
-	if err != nil {
+	if strings.EqualFold(maps["methods"], "get") {
+		response, err := conn.Retr(maps["path"])
+		if err != nil {
+			return err
+		}
+		defer response.Close()
+		destination, err := os.Create(workstep.FormatStr(maps["des"]))
+		_, err = io.Copy(destination, response)
 		return err
 	}
-	defer response.Close()
-	destination, err := os.Create(workstep.FormatStr(maps["des"]))
-	_, err = io.Copy(destination, response)
-	return err
+	if strings.EqualFold(maps["methods"], "put") {
+		file, err := os.Open(maps["path"])
+		if err != nil {
+			return err
+		}
+		return conn.Stor(maps["des"], file)
+	}
+	return fmt.Errorf("not support methods:%s", maps["methods"])
 }

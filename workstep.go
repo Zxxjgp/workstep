@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -20,6 +21,7 @@ type Session struct {
 	Steps           []step
 	Err             []error
 	ErrorContinue   bool
+	Logger          *log.Logger
 }
 
 type step struct {
@@ -47,6 +49,7 @@ func (hr *HandlerRegister) Add(h Handler, name string) error {
 func CreateSession() *Session {
 	return &Session{
 		HandlerRegister: CreateHandlerRegister(),
+		Logger:          log.New(os.Stdout, "", log.LstdFlags),
 	}
 }
 
@@ -77,17 +80,19 @@ func (s *Session) LoadConf(conf string) error {
 func (s *Session) Start() error {
 	for i, st := range s.Steps {
 		if h, ok := s.HandlerRegister.hmap[st.Type]; ok {
+			s.Logger.SetPrefix(fmt.Sprintf("step %3d %-8s ", i, st.Type))
 			s.Args = st.Args
 			err := h(s)
 			if err != nil {
-				log.Printf("step %d:%s,err:%v", i, st.Type, err)
+				s.Logger.Printf("err:%v", err)
 				if s.ErrorContinue {
 					s.Err = append(s.Err, err)
 				} else {
 					return err
 				}
+			} else {
+				s.Logger.Println("done.")
 			}
-			log.Printf("step %d:%s,done.", i, st.Type)
 		} else {
 			e := fmt.Errorf("cant found %s commond", st.Type)
 			if s.ErrorContinue {

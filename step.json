@@ -1,7 +1,7 @@
 [
   {
     "type": "ftp",
-    "args": "addr=10.39.12.56:21;user=user;password=password;path=/wxpt_imgs/service/bkjdcx.png;des=/Users/defned/1-{datetime}.png"
+    "args": "addr=127.0.0.1:21;methods=get;user=user;password=password;path=/wxpt_imgs/service/bkjdcx.png;des=/Users/defned/1-{datetime}.png"
   },
   {
     "type": "copy",

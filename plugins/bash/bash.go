@@ -34,11 +34,7 @@ func dobash(s *workstep.Session) error {
 		cmd.Stdout = f
 		cmd.Stderr = f
 
-		err = cmd.Start()
-		if err != nil {
-			return err
-		}
-		return nil
+		return cmd.Start()
 	} else {
 		command := exec.Command(split[0], split[1:]...)
 		var errorout bytes.Buffer
@@ -52,6 +48,6 @@ func dobash(s *workstep.Session) error {
 		if command.ProcessState.Success() {
 			return nil
 		}
-		return errors.New(fmt.Sprintf("processstate:%v,out:%v,error:%v", command.ProcessState, out.String(), errorout.String()))
+		return fmt.Errorf("processstate:%v,out:%v,error:%v", command.ProcessState, out.String(), errorout.String())
 	}
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/Fengxq2014/workstep/plugins/kill"
 	"log"
 
 	"github.com/Fengxq2014/workstep"
@@ -16,6 +17,7 @@ var conf string
 var errContinue bool
 
 func main() {
+	log.SetPrefix("sss")
 	flag.StringVar(&conf, "c", "./step.json", "config file path")
 	flag.BoolVar(&errContinue, "ec", false, "step error continue")
 	flag.Parse()
@@ -31,5 +33,6 @@ func main() {
 	zip.Register(session)
 	delete.Register(session)
 	bash.Register(session)
+	kill.Register(session)
 	session.Start()
 }
