@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/Fengxq2014/workstep/plugins/mkdir"
+	"github.com/Fengxq2014/workstep/plugins/sftp"
 	"log"
 
 	"github.com/Fengxq2014/workstep/plugins/kill"
@@ -34,5 +36,7 @@ func main() {
 	delete.Register(session)
 	bash.Register(session)
 	kill.Register(session)
+	mkdir.Register(session)
+	sftp.Register(session)
 	session.Start()
 }

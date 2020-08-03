@@ -15,6 +15,9 @@
 * unzip
 * bash
 * kill
+* mkdir
+* mkdirAll
+* sftp
 
 ## 实现一个插件
 ```golang
@@ -39,7 +42,7 @@ func doxxx(s *workstep.Session) error {
 ```
 
 ## 插件使用
-### ftp
+### ftp/sftp
 ```json
 {
     "type": "ftp",
@@ -62,7 +65,6 @@ des  | 下载地址 | 路径中可使用{date},{datetime}
     "type": "copy",
     "args": "/Users/defned/Desktop/WechatIMG6.png /Users/defned/Desktop/WechatIMG688888-{datetime}.png"
   }
-
 ```
 源文件地址，目标文件地址，中间用空格分割，目标路径中可使用{date},{datetime}
 

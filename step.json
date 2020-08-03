@@ -1,34 +1,43 @@
-[
-  {
-    "type": "ftp",
-    "args": "addr=127.0.0.1:21;methods=get;user=user;password=password;path=/wxpt_imgs/service/bkjdcx.png;des=/Users/defned/1-{datetime}.png"
-  },
-  {
-    "type": "copy",
-    "args": "/Users/defned/Desktop/WechatIMG6.png /Users/defned/Desktop/WechatIMG688888-{datetime}.png"
-  },
-  {
-    "type": "delete",
-    "args": "/Users/defned/git/workstep/test*"
-  },
-  {
-    "type": "delete",
-    "args": "/Users/defned/git/workstep/main.exe"
-  },
-  {
-    "type": "zip",
-    "args": "files=/Users/defned/Desktop/WechatIMG6.png,/Users/defned/Desktop/WechatIMG7.png,/Users/defned/git/authz;des=/Users/defned/git/workstep/test.zip"
-  },
-  {
-    "type": "unzip",
-    "args": "file=/Users/defned/git/workstep/test.zip;des=/Users/defned/git/workstep/testunzip"
-  },
-  {
-    "type": "bash",
-    "args": "jps"
-  },
-  {
-    "type": "bash",
-    "args": "nohup java -jar /Users/defned/git/JS_SheQu_Java_Sybase/community-service/target/community-service-1.0.0.jar"
-  }
-]
+{
+  "env": [
+    {
+      "key": "serverName",
+      "value": "bank-access"
+    },{
+      "key": "home",
+      "value": "/dooffeHome/bank-parent"
+    }
+  ],
+  "step": [
+    {
+      "type": "zip",
+      "args": "files=${home}/${serverName};des=${home}/backup/${serverName}-{datetime}.zip",
+      "skip": false
+    },
+    {
+      "type": "sftp",
+      "args": "addr=10.2.1.137:22;methods=get;user=root;password=root;path=/home/20200730/${serverName}.zip;des=/home/ftp/${serverName}.zip",
+      "skip": false
+    },
+    {
+      "type": "unzip",
+      "args": "file=/home/ftp/${serverName}.zip;des=/home/ftp/",
+      "skip": false
+    },
+    {
+      "type": "bash",
+      "args": "cp -rf /home/ftp/${serverName} ${home}",
+      "skip": false
+    },
+    {
+      "type": "delete",
+      "args": "/home/ftp/${serverName}",
+      "skip": false
+    },
+    {
+      "type": "bash",
+      "args": "systemctl restart ${serverName}",
+      "skip": false
+    }
+  ]
+}

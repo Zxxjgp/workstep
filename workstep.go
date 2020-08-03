@@ -22,11 +22,23 @@ type Session struct {
 	Err             []error
 	ErrorContinue   bool
 	Logger          *log.Logger
+	Env             []env
+}
+
+type config struct {
+	Env  []env  `json:"env"`
+	Step []step `json:"step"`
+}
+
+type env struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type step struct {
 	Type string `json:"type"`
 	Args string `json:"args"`
+	Skip bool   `json:"skip"`
 }
 
 // HandlerRegister 函数注册器
@@ -67,21 +79,28 @@ func (s *Session) LoadConf(conf string) error {
 	if err != nil {
 		return err
 	}
-	var steps []step
-	err = json.Unmarshal(bytes, &steps)
+	var confi config
+	err = json.Unmarshal(bytes, &confi)
 	if err != nil {
 		return err
 	}
-	s.Steps = steps
+	s.Steps = confi.Step
+	s.Env = confi.Env
 	return nil
 }
 
 // Start 开始处理
 func (s *Session) Start() error {
+	s.Logger.SetPrefix(fmt.Sprintf("step %3d %-8s ", -1, "global"))
+	s.Logger.Printf("total steps:%d", len(s.Steps))
 	for i, st := range s.Steps {
+		s.Logger.SetPrefix(fmt.Sprintf("step %3d %-8s ", i, st.Type))
+		if st.Skip {
+			s.Logger.Println("skipped")
+			continue
+		}
 		if h, ok := s.HandlerRegister.hmap[st.Type]; ok {
-			s.Logger.SetPrefix(fmt.Sprintf("step %3d %-8s ", i, st.Type))
-			s.Args = st.Args
+			s.Args = envVar(st.Args, s.Env)
 			err := h(s)
 			if err != nil {
 				s.Logger.Printf("err:%v", err)
@@ -103,6 +122,20 @@ func (s *Session) Start() error {
 		}
 	}
 	return nil
+}
+
+func envVar(str string, envs []env) string {
+	maps := make(map[string]string)
+	for _, v := range envs {
+		maps["${"+v.Key+"}"] = v.Value
+	}
+	for k, v := range maps {
+		if strings.Contains(str, k) {
+			str = strings.Replace(str, k, v, -1)
+		}
+	}
+	log.Println(str)
+	return str
 }
 
 // FormatStr 对占位符进行替换
